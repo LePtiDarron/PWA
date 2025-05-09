@@ -78,7 +78,7 @@ router.post('/', authenticateToken, async (req, res) => {
 
     // Une fois la conversation créée, envoyer les invitations par email
     for (const email of emailsToInvite) {
-      const inviteLink = `http://localhost:5175/invite/${conversation._id}`;
+      const inviteLink = `https://epimsg.duckdns.org/invite/${conversation._id}`;
       const mailOptions = {
         from: 'your-email@gmail.com',
         to: email,
@@ -115,7 +115,7 @@ router.post('/:id/invite', authenticateToken, async (req, res) => {
     if (!isAuthorized) return res.status(403).json({ message: 'Not allowed' });
 
     if (isValidEmail(username)) {
-      const inviteLink = `http://localhost:5175/invite/${id}`;
+      const inviteLink = `https://epimsg.duckdns.org/invite/${id}`;
       const mailOptions = {
         from: 'your-email@gmail.com',
         to: username,

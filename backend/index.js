@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 // Configuration CORS
 app.use(cors({
-  origin: 'http://13.61.146.231:5173',
+  origin: 'https://epimsg.duckdns.org',
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -76,7 +76,7 @@ app.get("/", (req, res) => {
 const { Server } = require("socket.io");
 const io = new Server(server, {
   cors: {
-    origin: 'http://13.61.146.231:5173',
+    origin: 'https://epimsg.duckdns.org',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
