@@ -227,6 +227,7 @@ async function fetchConversations() {
   try {
     const res = await api.get('/conversations');
     conversations.value = res.data;
+    localStorage.setItem('conversations-cache', JSON.stringify(`${socket.username}-conversations-cache`));
   } catch (err) {
     if (err?.queued) {
       error.value = 'You are offline. The request has been queued and will be sent when you are back online.';
@@ -249,6 +250,15 @@ window.addEventListener('online', () => {
 });
 
 onMounted(() => {
+  const cachedConversations = localStorage.getItem(`${socket.username}-conversations-cache`);
+  if (cachedConversations) {
+    try {
+      conversations.value = JSON.parse(cachedConversations);
+    } catch (e) {
+      console.error('Erreur lors du parsing du cache des conversations', e);
+    }
+  }
+
   fetchConversations();
   setupSocketIdentification();
   getNotificationStatus();
