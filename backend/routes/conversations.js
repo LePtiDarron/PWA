@@ -115,7 +115,7 @@ router.post('/:id/invite', authenticateToken, async (req, res) => {
     if (!isAuthorized) return res.status(403).json({ message: 'Not allowed' });
 
     if (isValidEmail(username)) {
-      const inviteLink = `https://epimsg.duckdns.org/invite/${id}`;
+      const inviteLink = `https://epimsg.duckdns.org/invite/${conversation._id}`;
       const mailOptions = {
         from: 'your-email@gmail.com',
         to: username,
