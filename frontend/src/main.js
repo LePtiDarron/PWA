@@ -18,10 +18,4 @@ if ('serviceWorker' in navigator) {
       console.error('Erreur d’enregistrement du Service Worker:', err);
     }
   });
-
-  navigator.serviceWorker.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'OPENED_FROM_NOTIFICATION') {
-      console.log('🔗 Notification :', event.data.message);
-    }
-  });
 }

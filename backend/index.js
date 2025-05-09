@@ -24,11 +24,13 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        connectSrc: ["'self'", "ws://localhost:3000", "wss://yourdomain.com"],  // WebSocket autorisé
+        connectSrc: ["'self'", "ws://localhost:3000", "wss://yourdomain.com"],
         scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
         objectSrc: ["'none'"],
+        workerSrc: ["'self'"],
+        manifestSrc: ["'self'"],
         upgradeInsecureRequests: [],
       }
     }
