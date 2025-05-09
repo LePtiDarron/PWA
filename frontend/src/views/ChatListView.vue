@@ -180,7 +180,6 @@ async function togglePushNotifications() {
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
       })
 
-      const token = localStorage.getItem('token')
       await api.post('/push/subscribe', {
         endpoint: subscription.endpoint,
         keys: {
@@ -191,7 +190,7 @@ async function togglePushNotifications() {
       });
 
       const result = await response.json();
-      if (response.ok) {
+      if (result.ok) {
         pushNotificationsEnabled.value = true;
       } else {
         error.value = 'Could not update push notifications';
