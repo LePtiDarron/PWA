@@ -74,16 +74,14 @@ app.get("/", (req, res) => {
 
 // Sockets
 const { Server } = require("socket.io");
+const initSocket = require('./socket');
+
 const io = new Server(server, {
   cors: {
     origin: 'https://epimsg.duckdns.org',
     methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
   }
 });
-
-const initSocket = require('./socket');
 initSocket(io);
 
 // Serveur
