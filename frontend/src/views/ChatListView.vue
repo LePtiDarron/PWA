@@ -57,6 +57,11 @@
       {{ error }}
     </div>
 
+    <!-- Offline Indicator -->
+    <div v-if="isOffline" class="alert alert-warning">
+      You are currently offline. Some actions may be queued.
+    </div>
+
     <!-- Toast Component -->
     <div v-if="showToast" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
       <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
@@ -77,7 +82,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import api from '../api';
 import { useRoute, useRouter } from 'vue-router';
 import { socket, setupSocketIdentification } from '../socket';
-                          
+
 const VAPID_PUBLIC_KEY = 'BNXhe5ApvICwVmnrEY6n20lyYdpkZNOs5zIeNpQ6-YWBz8tuRT_T1nKXkooeT3CM0WHM3ZxKiY3VWOMrMEVHSSI';
 const route = useRoute();
 const router = useRouter();
@@ -90,6 +95,8 @@ const user = ref({
 const showToast = ref(false);
 const toastMessage = ref('');
 const pushNotificationsEnabled = ref(false);
+
+const isOffline = ref(!navigator.onLine);
 
 function displayToast(message) {
   toastMessage.value = message;
@@ -174,21 +181,14 @@ async function togglePushNotifications() {
       })
 
       const token = localStorage.getItem('token')
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/push/subscribe`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+      await api.post('/push/subscribe', {
+        endpoint: subscription.endpoint,
+        keys: {
+          p256dh: btoa(String.fromCharCode(...new Uint8Array(subscription.getKey('p256dh')))),
+          auth: btoa(String.fromCharCode(...new Uint8Array(subscription.getKey('auth'))))
         },
-        body: JSON.stringify({
-          endpoint: subscription.endpoint,
-          keys: {
-            p256dh: btoa(String.fromCharCode(...new Uint8Array(subscription.getKey('p256dh')))),
-            auth: btoa(String.fromCharCode(...new Uint8Array(subscription.getKey('auth'))))
-          },
-          userId: currentUserId
-        })
-      })
+        userId: currentUserId
+      });
 
       const result = await response.json();
       if (response.ok) {
@@ -228,10 +228,26 @@ async function fetchConversations() {
     const res = await api.get('/conversations');
     conversations.value = res.data;
   } catch (err) {
-    error.value = err.response?.data?.message || 'Failed to fetch conversations.';
+    if (err?.queued) {
+      // Si la requête a été mise en file d'attente, on peut informer l'utilisateur
+      error.value = 'You are offline. The request has been queued and will be sent when you are back online.';
+    } else {
+      error.value = err.response?.data?.message || 'Failed to fetch conversations.';
+    }
     setTimeout(() => error.value = '', 5000);
   }
 }
+
+// Handle online/offline status
+window.addEventListener('offline', () => {
+  isOffline.value = true;
+  displayToast('You are now offline. Some actions may be queued.');
+});
+
+window.addEventListener('online', () => {
+  isOffline.value = false;
+  displayToast('You are back online.');
+});
 
 onMounted(() => {
   fetchConversations();

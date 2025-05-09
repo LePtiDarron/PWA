@@ -167,7 +167,11 @@ async function fetchMessages() {
     canInvite.value = res.data.canInvite;
     scrollToBottom();
   } catch (err) {
-    error.value = err.response?.data?.message || 'Failed to fetch messages.';
+    if (!navigator.onLine) {
+      error.value = 'No internet connection. Please try again later.';
+    } else {
+      error.value = err.response?.data?.message || 'Failed to fetch messages.';
+    }
     setTimeout(() => (error.value = ''), 5000);
   }
 }
@@ -178,7 +182,11 @@ async function leaveConversation() {
     socket.emit("leave conversation", { username: socket.username, conversationId });
     router.push('/chat');
   } catch (err) {
-    error.value = err.response?.data?.message || 'Could not leave the conversation.';
+    if (!navigator.onLine) {
+      error.value = 'No internet connection. Please try again later.';
+    } else {
+      error.value = err.response?.data?.message || 'Could not leave the conversation.';
+    }
     setTimeout(() => (error.value = ''), 5000);
   }
 }
@@ -193,7 +201,11 @@ async function kickUser(usernameToKick) {
     socket.emit("kick user", { username: usernameToKick, conversationId });
     await fetchMessages();
   } catch (err) {
-    error.value = err.response?.data?.message || "Failed to kick the user.";
+    if (!navigator.onLine) {
+      error.value = 'No internet connection. Please try again later.';
+    } else {
+      error.value = err.response?.data?.message || "Failed to kick the user.";
+    }
     setTimeout(() => (error.value = ''), 5000);
   }
 }
@@ -216,7 +228,11 @@ async function sendMessage() {
     });
     text.value = '';
   } catch (err) {
-    error.value = err.response?.data?.message || 'Failed to send message.';
+    if (!navigator.onLine) {
+      error.value = 'No internet connection. Please try again later.';
+    } else {
+      error.value = err.response?.data?.message || 'Failed to send message.';
+    }
     setTimeout(() => (error.value = ''), 5000);
   }
 }
@@ -239,7 +255,11 @@ async function inviteUser() {
     inviteUsername.value = '';
     await fetchMessages();
   } catch (err) {
-    error.value = err.response?.data?.message || 'Failed to invite user.';
+    if (!navigator.onLine) {
+      error.value = 'No internet connection. Please try again later.';
+    } else {
+      error.value = err.response?.data?.message || 'Failed to invite user.';
+    }
     setTimeout(() => (error.value = ''), 5000);
   }
 }

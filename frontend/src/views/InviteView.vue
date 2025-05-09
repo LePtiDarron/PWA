@@ -34,10 +34,26 @@ export default {
   },
   methods: {
     async checkInvitation(conversationId) {
+      const cachedResponse = localStorage.getItem(`invite_${conversationId}`);
+
+      if (cachedResponse) {
+        const parsedResponse = JSON.parse(cachedResponse);
+        if (parsedResponse.success) {
+          this.$router.push(`/chat/${conversationId}`);
+          this.loading = false;
+          return;
+        } else {
+          this.error = true;
+          this.loading = false;
+          return;
+        }
+      }
+
       try {
         const response = await api.get(`/conversations/invite/${conversationId}`);
 
         if (response.status === 200) {
+          localStorage.setItem(`invite_${conversationId}`, JSON.stringify({ success: true }));
           this.$router.push(`/chat/${conversationId}`);
         } else {
           this.error = true;

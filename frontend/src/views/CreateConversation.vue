@@ -115,6 +115,8 @@ const usernamesList = ref([]);
 const searchResults = ref([]);
 const router = useRouter();
 
+const CACHE_KEY = 'createConversationCache';
+
 async function searchUsernames() {
   if (newUsername.value.length >= 1) {
     try {
@@ -122,9 +124,15 @@ async function searchUsernames() {
         params: { query: newUsername.value }
       });
       searchResults.value = response.data.map(user => user.username);
+      localStorage.setItem(CACHE_KEY, JSON.stringify(searchResults.value));
     } catch (err) {
       console.error('Error during search:', err);
-      searchResults.value = [];
+      const cachedResults = localStorage.getItem(CACHE_KEY);
+      if (cachedResults) {
+        searchResults.value = JSON.parse(cachedResults);
+      } else {
+        searchResults.value = [];
+      }
     }
   } else {
     searchResults.value = [];
