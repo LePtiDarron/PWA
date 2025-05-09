@@ -225,6 +225,9 @@ router.get('/invite/:id', authenticateToken, async (req, res) => {
   const userId = req.user.id;
 
   try {
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
     const conversation = await Conversation.findById(id);
     if (!conversation) {
       return res.status(404).json({ message: 'Not found' });
@@ -234,7 +237,7 @@ router.get('/invite/:id', authenticateToken, async (req, res) => {
       return res.status(400).json({ message: 'You already are in this conversation' });
     }
 
-    conversation.participants.push(userId);
+    conversation.participants.push(user._id);
     await conversation.save();
 
     res.status(200).json({ message: 'Accepted' });
