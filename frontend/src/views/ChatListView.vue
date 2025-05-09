@@ -250,10 +250,13 @@ window.addEventListener('online', () => {
 });
 
 onMounted(() => {
+  console.log('chaching...');
   const cachedConversations = localStorage.getItem(`${socket.username}-conversations-cache`);
   if (cachedConversations) {
+    console.log('chache found');
     try {
       conversations.value = JSON.parse(cachedConversations);
+      console.log('chache DONE');
     } catch (e) {
       console.error('Erreur lors du parsing du cache des conversations', e);
     }

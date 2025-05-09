@@ -9,13 +9,13 @@ function setupSocketIdentification() {
   const email = localStorage.getItem('email');
   const username = localStorage.getItem('username');
 
-  if (!socket.connected) {
-    socket.connect();
-  }
-
   socket.userId = userId;
   socket.email = email;
   socket.username = username;
+
+  if (!socket.connected) {
+    socket.connect();
+  }
 
   socket.on('connect', () => {
     if (userId && email && username) {
