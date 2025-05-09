@@ -35,7 +35,7 @@ export default {
   methods: {
     async checkInvitation(conversationId) {
       try {
-        const response = await api.get(`/api/conversations/invite/${conversationId}`);
+        const response = await api.get(`/conversations/invite/${conversationId}`);
 
         if (response.status === 200) {
           this.$router.push(`/chat/${conversationId}`);

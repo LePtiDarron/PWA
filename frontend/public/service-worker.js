@@ -73,7 +73,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  if (url.pathname.startsWith('/api/messages')) {
+  if (url.pathname.startsWith('/messages')) {
     event.respondWith(
       caches.open(MESSAGES_CACHE).then(async (cache) => {
         try {

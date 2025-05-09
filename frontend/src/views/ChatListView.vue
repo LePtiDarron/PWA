@@ -165,7 +165,7 @@ async function togglePushNotifications() {
 
     if (existingSubscription) {
       await existingSubscription.unsubscribe();
-      await api.post(`push/unsubscribe`, {userId: currentUserId});
+      await api.post(`/push/unsubscribe`, {userId: currentUserId});
       pushNotificationsEnabled.value = false;
     } else {
       const subscription = await swRegistration.pushManager.subscribe({
@@ -174,7 +174,7 @@ async function togglePushNotifications() {
       })
 
       const token = localStorage.getItem('token')
-      const response = await fetch(`${import.meta.env.VITE_API_URL}push/subscribe`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/push/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -225,7 +225,7 @@ function logout() {
 
 async function fetchConversations() {
   try {
-    const res = await api.get('/api/conversations');
+    const res = await api.get('/conversations');
     conversations.value = res.data;
   } catch (err) {
     error.value = err.response?.data?.message || 'Failed to fetch conversations.';
@@ -249,7 +249,7 @@ onMounted(() => {
   socket.on("chat message", async (msg) => {
     if (document.visibilityState !== "visible") {
       try {
-        await api.post(`${import.meta.env.VITE_API_URL}push/notify`, {
+        await api.post('/push/notify', {
           url: `/chat/${msg.conversationId}`,
           username: msg.username,
           body: msg.text,

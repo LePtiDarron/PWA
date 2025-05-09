@@ -64,9 +64,9 @@ const userRoutes = require('./routes/user');
 
 app.use("/auth", authRoutes);
 app.use("/push", pushRoutes);
-app.use('/api/messages', messagesRoutes);
-app.use('/api/conversations', conversationRoutes);
-app.use("/api/users", userRoutes);
+app.use('/messages', messagesRoutes);
+app.use('/conversations', conversationRoutes);
+app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running ✅");

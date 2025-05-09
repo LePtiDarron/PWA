@@ -160,7 +160,7 @@ function displayToast(message) {
 
 async function fetchMessages() {
   try {
-    const res = await api.get(`/api/messages/${conversationId}`);
+    const res = await api.get(`/messages/${conversationId}`);
     messages.value = res.data.messages;
     participants.value = res.data.participants;
     conversation.value = res.data.conversation;
@@ -174,7 +174,7 @@ async function fetchMessages() {
 
 async function leaveConversation() {
   try {
-    await api.post(`/api/conversations/${conversationId}/leave`);
+    await api.post(`/conversations/${conversationId}/leave`);
     socket.emit("leave conversation", { username: socket.username, conversationId });
     router.push('/chat');
   } catch (err) {
@@ -187,7 +187,7 @@ async function kickUser(usernameToKick) {
   try {
     const user = participants.value.find(p => p.username === usernameToKick);
     if (!user) return;
-    await api.post(`/api/conversations/${conversationId}/kick`, {
+    await api.post(`/conversations/${conversationId}/kick`, {
       username: user.username,
     });
     socket.emit("kick user", { username: usernameToKick, conversationId });
@@ -206,7 +206,7 @@ async function sendMessage() {
   if (!text.value.trim()) return;
 
   try {
-    const res = await api.post(`/api/messages`, {
+    const res = await api.post(`/messages`, {
       conversationId,
       text: text.value.trim(),
     });
@@ -223,7 +223,7 @@ async function sendMessage() {
 
 async function inviteUser() {
   try {
-    await api.post(`/api/conversations/${conversationId}/invite`, {
+    await api.post(`/conversations/${conversationId}/invite`, {
       username: inviteUsername.value,
     });
 
@@ -247,7 +247,7 @@ async function inviteUser() {
 async function searchUsernames() {
   if (inviteUsername.value.length >= 1) {
     try {
-      const response = await api.get('/api/users/search', {
+      const response = await api.get('/users/search', {
         params: { query: inviteUsername.value }
       });
       searchResults.value = response.data.map(user => user.username);
@@ -284,7 +284,7 @@ onMounted(() => {
   socket.on("chat message", async (msg) => {
     if (document.visibilityState !== "visible") {
       try {
-        await api.post(`${import.meta.env.VITE_API_URL}push/notify`, {
+        await api.post('/push/notify', {
           url: `/chat/${msg.conversationId}`,
           username: msg.username,
           body: msg.text,

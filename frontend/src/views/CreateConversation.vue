@@ -118,7 +118,7 @@ const router = useRouter();
 async function searchUsernames() {
   if (newUsername.value.length >= 1) {
     try {
-      const response = await api.get('/api/users/search', {
+      const response = await api.get('/users/search', {
         params: { query: newUsername.value }
       });
       searchResults.value = response.data.map(user => user.username);
@@ -153,7 +153,7 @@ function removeUsername(index) {
 
 async function createConversation() {
   try {
-    const response = await api.post('/api/conversations', {
+    const response = await api.post('/conversations', {
       name: name.value,
       participantUsername: usernamesList.value,
     });
