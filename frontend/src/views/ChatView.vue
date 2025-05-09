@@ -194,6 +194,16 @@ window.addEventListener('online', async () => {
   await fetchMessages();
 });
 
+function handleError(err) {
+  if (!navigator.onLine) {
+    error.value = 'No internet connection. Please try again later.';
+  } else {
+    error.value = err.response?.data?.message || 'An error occurred.';
+  }
+  setTimeout(() => (error.value = ''), 5000);
+}
+
+
 async function fetchMessages() {
   try {
     const res = await api.get(`/messages/${conversationId}`);
