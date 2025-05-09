@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const socket = io('wss://epimsg.duckdns.org', {
+const socket = io('ws://localhost:3000', {
   autoConnect: false,
 });
 
