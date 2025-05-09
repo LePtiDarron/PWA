@@ -99,6 +99,11 @@
         {{ error }}
       </div>
     </form>
+
+    <!-- Offline Indicator -->
+    <div v-if="isOffline" class="alert alert-warning">
+      You are currently offline. Some actions may be queued.
+    </div>
   </div>
 </template>
 
@@ -115,6 +120,7 @@ const usernamesList = ref([]);
 const searchResults = ref([]);
 const router = useRouter();
 
+const isOffline = ref(!navigator.onLine);
 const CACHE_KEY = 'createConversationCache';
 
 async function searchUsernames() {
@@ -139,6 +145,38 @@ async function searchUsernames() {
   }
 }
 
+window.addEventListener('offline', () => {
+  isOffline.value = true;
+  displayToast('You are now offline. Some actions may be queued.');
+});
+
+window.addEventListener('online', async () => {
+  isOffline.value = false;
+  const queuedConversation = localStorage.getItem('queuedConversation');
+  if (queuedConversation) {
+    try {
+      const conversationData = JSON.parse(queuedConversation);
+      const response = await api.post('/conversations', conversationData);
+
+      const conversationId = response.data._id;
+
+      if (socket.connected) {
+        socket.emit('user invited', {
+          conversationId,
+          participantUsername: conversationData.participantUsername,
+        });
+      } else {
+        console.error('Socket is not connected');
+      }
+
+      router.push('/chat');
+      localStorage.removeItem('queuedConversation');
+    } catch (err) {
+      console.error('Failed to process queued conversation:', err);
+    }
+  }
+});
+
 function addUsername() {
   if (newUsername.value && !usernamesList.value.includes(newUsername.value)) {
     usernamesList.value.push(newUsername.value);
@@ -160,6 +198,17 @@ function removeUsername(index) {
 }
 
 async function createConversation() {
+  if (isOffline.value) {
+    const conversationData = {
+      name: name.value,
+      participantUsername: usernamesList.value,
+    };
+    localStorage.setItem('queuedConversation', JSON.stringify(conversationData));
+    error.value = 'You are offline. Your conversation creation will be queued.';
+    setTimeout(() => error.value = '', 5000);
+    return;
+  }
+
   try {
     const response = await api.post('/conversations', {
       name: name.value,

@@ -112,6 +112,11 @@
       {{ error }}
     </div>
 
+    <!-- Offline Indicator -->
+    <div v-if="isOffline" class="alert alert-warning">
+      You are currently offline. Some actions may be queued.
+    </div>
+
     <!-- Toast Component -->
     <div v-if="showToast" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
       <div class="toast show opacity-100" role="alert" aria-live="assertive" aria-atomic="true">
@@ -137,6 +142,8 @@ const router = useRouter();
 const route = useRoute();
 const conversationId = route.params.id;
 
+const isOffline = ref(!navigator.onLine);
+
 const conversation = ref('');
 const messages = ref([]);
 const participants = ref([]);
@@ -148,6 +155,7 @@ const error = ref('');
 const showToast = ref(false);
 const toastMessage = ref('');
 const searchResults = ref([]);
+const offlineMessages = ref([]);
 
 function displayToast(message) {
   toastMessage.value = message;
@@ -157,6 +165,34 @@ function displayToast(message) {
     showToast.value = false;
   }, 5000);
 }
+
+window.addEventListener('offline', () => {
+  isOffline.value = true;
+  displayToast('You are now offline. Some actions may be queued.');
+});
+
+window.addEventListener('online', async () => {
+  isOffline.value = false;
+  displayToast('You are back online.');
+
+  while (offlineMessages.value.length > 0) {
+    const messageToSend = offlineMessages.value.shift();
+    try {
+      const res = await api.post(`/messages`, {
+        conversationId,
+        text: messageToSend,
+      });
+      socket.emit('chat message', {
+        ...res.data,
+        conversationId,
+      });
+    } catch (err) {
+      handleError(err);
+    }
+  }
+
+  await fetchMessages();
+});
 
 async function fetchMessages() {
   try {
@@ -217,23 +253,23 @@ function isInCanInvite(username) {
 async function sendMessage() {
   if (!text.value.trim()) return;
 
-  try {
-    const res = await api.post(`/messages`, {
-      conversationId,
-      text: text.value.trim(),
-    });
-    socket.emit('chat message', {
-      ...res.data,
-      conversationId,
-    });
-    text.value = '';
-  } catch (err) {
-    if (!navigator.onLine) {
-      error.value = 'No internet connection. Please try again later.';
-    } else {
-      error.value = err.response?.data?.message || 'Failed to send message.';
+  if (navigator.onLine) {
+    try {
+      const res = await api.post(`/messages`, {
+        conversationId,
+        text: text.value.trim(),
+      });
+      socket.emit('chat message', {
+        ...res.data,
+        conversationId,
+      });
+      text.value = '';
+    } catch (err) {
+      handleError(err);
     }
-    setTimeout(() => (error.value = ''), 5000);
+  } else {
+    offlineMessages.value.push(text.value.trim());
+    text.value = '';
   }
 }
 

@@ -229,7 +229,6 @@ async function fetchConversations() {
     conversations.value = res.data;
   } catch (err) {
     if (err?.queued) {
-      // Si la requête a été mise en file d'attente, on peut informer l'utilisateur
       error.value = 'You are offline. The request has been queued and will be sent when you are back online.';
     } else {
       error.value = err.response?.data?.message || 'Failed to fetch conversations.';
