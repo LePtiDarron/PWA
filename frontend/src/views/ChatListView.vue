@@ -227,7 +227,7 @@ async function fetchConversations() {
   try {
     const res = await api.get('/conversations');
     conversations.value = res.data;
-    localStorage.setItem(`${socket.username}-conversations-cache`, JSON.stringify(conversations.value));
+    localStorage.setItem(`conversations-cache`, JSON.stringify(conversations.value));
   } catch (err) {
     if (err?.queued) {
       error.value = 'You are offline. The request has been queued and will be sent when you are back online.';
@@ -251,7 +251,7 @@ window.addEventListener('online', () => {
 
 onMounted(() => {
   console.log('chaching...');
-  const cachedConversations = localStorage.getItem(`${socket.username}-conversations-cache`);
+  const cachedConversations = localStorage.getItem(`conversations-cache`);
   if (cachedConversations) {
     console.log('chache found');
     try {

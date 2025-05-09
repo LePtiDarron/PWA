@@ -202,7 +202,7 @@ async function fetchMessages() {
     conversation.value = res.data.conversation;
     canInvite.value = res.data.canInvite;
     scrollToBottom();
-    localStorage.setItem(`${socket.username}-messages-${conversationId}`, JSON.stringify({
+    localStorage.setItem(`messages-${conversationId}`, JSON.stringify({
       messages: messages.value,
       participants: participants.value,
       conversation: conversation.value,
@@ -337,7 +337,7 @@ function scrollToBottom() {
 }
 
 onMounted(() => {
-  const cachedData = localStorage.getItem(`${socket.username}-messages-${conversationId}`);
+  const cachedData = localStorage.getItem(`messages-${conversationId}`);
   if (cachedData) {
     try {
       const parsed = JSON.parse(cachedData);
@@ -372,7 +372,7 @@ onMounted(() => {
     if (msg.conversationId === conversationId) {
       messages.value.push(msg);
 
-      localStorage.setItem(`${socket.username}-messages-${conversationId}`, JSON.stringify({
+      localStorage.setItem(`messages-${conversationId}`, JSON.stringify({
         messages: messages.value,
         participants: participants.value,
         conversation: conversation.value,
