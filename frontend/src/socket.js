@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const socket = io(import.meta.env.VITE_API_URL, {
+const socket = io('wss://epimsg.duckdns.org', {
   autoConnect: false,
 });
 
@@ -16,10 +16,6 @@ function setupSocketIdentification() {
   socket.userId = userId;
   socket.email = email;
   socket.username = username;
-
-  socket.on('connect_error', (err) => {
-    console.error('Erreur de connexion socket:', err);
-  });
 
   socket.on('connect', () => {
     if (userId && email && username) {
