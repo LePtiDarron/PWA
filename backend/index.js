@@ -24,7 +24,7 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        connectSrc: ["'self'", "ws://localhost:3000", "wss://epimsg.duckdns.org"],
+        connectSrc: ["'self'", "wss://epimsg.duckdns.org/api"],
         scriptSrc: ["'self'", "'unsafe-inline'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", "data:"],
