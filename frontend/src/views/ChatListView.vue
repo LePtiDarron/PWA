@@ -189,8 +189,8 @@ async function togglePushNotifications() {
         userId: currentUserId
       });
 
-      const result = await response.json();
-      if (result.ok) {
+      console.log(response);
+      if (response.ok) {
         pushNotificationsEnabled.value = true;
       } else {
         error.value = 'Could not update push notifications';
