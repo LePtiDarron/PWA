@@ -180,7 +180,7 @@ async function togglePushNotifications() {
         applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
       })
 
-      await api.post('/push/subscribe', {
+      const response = await api.post('/push/subscribe', {
         endpoint: subscription.endpoint,
         keys: {
           p256dh: btoa(String.fromCharCode(...new Uint8Array(subscription.getKey('p256dh')))),
