@@ -237,7 +237,7 @@ router.get('/invite/:id', authenticateToken, async (req, res) => {
       return res.status(400).json({ message: 'You already are in this conversation' });
     }
 
-    conversation.participants.push(user._id);
+    conversation.participants.push(user);
     await conversation.save();
 
     res.status(200).json({ message: 'Accepted' });
