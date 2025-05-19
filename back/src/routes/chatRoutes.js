@@ -1,17 +1,17 @@
 const { BedrockAgentRuntimeClient, ConverseCommand } = require('@aws-sdk/client-bedrock-agent-runtime');
 const express = require('express');
 const router = express.Router();
+const { v4: uuidv4 } = require('uuid');
 
-const client = new BedrockAgentRuntimeClient({ region: 'eu-north-1' });
+const client = new BedrockAgentRuntimeClient({ region: 'eu-west-3' });
 
 router.post('/', async (req, res) => {
   const message = req.body.message;
-  const sessionId = `user-${Date.now()}`;
 
   const input = {
-    agentId: 'IZXGEVCPGS',
-    agentAliasId: 'TSTALIASID',
-    sessionId,
+    agentId: 'WWMEMQTSYD',
+    agentAliasId: 'VORL3ZXZ5P',
+    sessionId: uuidv4(),
     input: {
       text: message
     }
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     const command = new ConverseCommand(input);
     const response = await client.send(command);
 
-    const reply = response?.output?.text || "Désolé, je n'ai pas compris.";
+    const reply = response?.output?.text || "Error";
     res.json({ message: reply });
   } catch (err) {
     console.error('Error Bedrock agent:', err);

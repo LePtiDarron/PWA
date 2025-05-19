@@ -4,7 +4,6 @@ import api from '../api';
 const Chat = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
-  const sessionId = String(Date.now());
 
   const sendMessage = async () => {
   if (!input.trim()) return;
@@ -13,7 +12,7 @@ const Chat = () => {
     setMessages(prev => [...prev, userMessage]);
 
     try {
-      const res = await api.post('/chat', { message: input, sessionId });
+      const res = await api.post('/chat', { message: input });
       const response = res.data;
 
       setMessages(prev => [...prev, { from: 'ia', text: response.reply }]);
