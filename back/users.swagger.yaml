@@ -1,0 +1,60 @@
+openapi: 3.0.3
+info:
+  title: User API
+  version: 1.0.0
+  description: API Test
+
+servers:
+  - url: https://123.123.123.123
+
+paths:
+  /chat:
+    post:
+      summary: Create a new user
+      description: Create a new user with email, firstname, and lastname
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - firstname
+                - lastname
+              properties:
+                email:
+                  type: string
+                  format: email
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
+                  __v:
+                    type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
