@@ -3,12 +3,19 @@ const router = express.Router();
 const User = require('../models/User');
 
 router.post('/', async (req, res) => {
+  console.log('----------------------------------------');
   const { email, firstname, lastname } = req.body;
+
+  if (!email || !firstname || !lastname) {
+    console.log("Missing fields");
+    res.status(400).json({ error: "Missing fields" });
+  }
   try {
     const user = await User.create({ email, firstname, lastname });
     res.status(201).json(user);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    console.log("error: ", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
