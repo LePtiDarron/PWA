@@ -15,9 +15,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 }).then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-app.use('/chat', chatRoutes);
-app.use('/users', usersRoutes);
-app.get('/', async (req, res) => {res.json({message: 'Server running'})});
+app.use('/api/chat', chatRoutes);
+app.use('/api/users', usersRoutes);
+app.get('/api/', async (req, res) => {res.json({message: 'Server running'})});
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
