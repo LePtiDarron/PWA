@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile
     image: nodejs-back
     container_name: back
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - mongo
     env_file:
@@ -17,15 +17,15 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-  
+
   front:
     build:
       context: ./front
       dockerfile: Dockerfile
     image: reactjs-front
     container_name: front
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - back
     env_file:
@@ -33,6 +33,34 @@ services:
     volumes:
       - ./front:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    networks:
+      - app-network
+    depends_on:
+      - back
+      - front
+  restart: unless-stopped
+    certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    entrypoint: >
+      sh -c "trap exit TERM; while :; do sleep 12h & wait $${!}; certbot renew; done"
     networks:
       - app-network
     restart: unless-stopped

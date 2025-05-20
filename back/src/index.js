@@ -4,8 +4,6 @@ const usersRoutes = require('./routes/usersRoutes');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const https = require('https');
-const fs = require('fs');
 
 const app = express();
 app.use(express.json());
@@ -21,12 +19,5 @@ app.use('/chat', chatRoutes);
 app.use('/users', usersRoutes);
 app.get('/', async (req, res) => {res.json({message: 'Server running'})});
 
-const server = https.createServer({
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-}, app);
-
 const PORT = process.env.PORT || 8000;
-server.listen(PORT, () => {
-  console.log(`HTTPS server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
