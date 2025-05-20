@@ -8,14 +8,16 @@ router.post('/', async (req, res) => {
 
   if (!email || !firstname || !lastname) {
     console.log("Missing fields");
-    res.status(400).json({ error: "Missing fields" });
+    return res.status(400).json({ error: "Missing fields" });
   }
+
   try {
     const user = await User.create({ email, firstname, lastname });
-    res.status(201).json(user);
+    console.log("Created !");
+    return res.status(201).json(user);
   } catch (err) {
     console.log("error: ", err.message);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
