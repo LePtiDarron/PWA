@@ -1,31 +1,41 @@
-const { BedrockAgentRuntimeClient, ConverseCommand } = require('@aws-sdk/client-bedrock-agent-runtime');
+const { BedrockAgentRuntimeClient, InvokeAgentCommand } = require('@aws-sdk/client-bedrock-agent-runtime');
+const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const router = express.Router();
-const { v4: uuidv4 } = require('uuid');
 
-const client = new BedrockAgentRuntimeClient({ region: 'eu-west-3' });
+const client = new BedrockAgentRuntimeClient({
+  region: AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
 
 router.post('/', async (req, res) => {
   const message = req.body.message;
+  const sessionId = uuidv4();
 
-  const input = {
+  const command = new InvokeAgentCommand({
     agentId: 'WWMEMQTSYD',
     agentAliasId: 'VORL3ZXZ5P',
-    sessionId: uuidv4(),
-    input: {
-      text: message
-    }
-  };
+    sessionId,
+    inputText: message,
+  });
 
   try {
-    const command = new ConverseCommand(input);
+    let completion = "";
     const response = await client.send(command);
 
-    const reply = response?.output?.text || "Error";
-    res.json({ message: reply });
+    for await (const chunkEvent of response.completion) {
+      const chunk = chunkEvent.chunk;
+      const decodedResponse = new TextDecoder('utf-8').decode(chunk.bytes);
+      completion += decodedResponse;
+    }
+
+    res.json({ sessionId, message: completion });
   } catch (err) {
     console.error('Error Bedrock agent:', err);
-    res.status(500).json({ error: err });
+    res.status(500).json({ error: err.message });
   }
 });
 
