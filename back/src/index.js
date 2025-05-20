@@ -7,13 +7,6 @@ const cors = require('cors');
 const https = require('https');
 const fs = require('fs');
 
-const options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/votredomaine.duckdns.org/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/votredomaine.duckdns.org/fullchain.pem')
-};
-
-app.use(express.static('build'));
-
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -28,6 +21,12 @@ app.use('/chat', chatRoutes);
 app.use('/users', usersRoutes);
 app.get('/', async (req, res) => {res.json({message: 'Server running'})});
 
-https.createServer(options, app).listen(443, () => {
-  console.log('Serveur HTTPS running on port 443');
+const server = https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app);
+
+const PORT = process.env.PORT || 8000;
+server.listen(PORT, () => {
+  console.log(`HTTPS server running on port ${PORT}`);
 });
