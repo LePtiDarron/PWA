@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     image: nodejs-back
     container_name: back
+    ports:
+      - "8000:8000"
     expose:
       - "8000"
     depends_on:
@@ -24,6 +26,8 @@ services:
       dockerfile: Dockerfile
     image: reactjs-front
     container_name: front
+    ports:
+      - "3000:3000"
     expose:
       - "3000"
     depends_on:
