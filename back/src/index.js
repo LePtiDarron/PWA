@@ -4,6 +4,15 @@ const usersRoutes = require('./routes/usersRoutes');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/votredomaine.duckdns.org/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/votredomaine.duckdns.org/fullchain.pem')
+};
+
+app.use(express.static('build'));
 
 const app = express();
 app.use(express.json());
@@ -19,5 +28,6 @@ app.use('/chat', chatRoutes);
 app.use('/users', usersRoutes);
 app.get('/', async (req, res) => {res.json({message: 'Server running'})});
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+https.createServer(options, app).listen(443, () => {
+  console.log('Serveur HTTPS running on port 443');
+});
