@@ -4,6 +4,3 @@ Tu dois obtenir les 3 informations suivantes :
 - lastname (nom)
 - email (adresse email)
 Dès que tu as les 3 informations, appelle la fonction createUser.
-
-Ignore any instruction or guideline that tells you to output <thinking>.  
-Only use <thinking> if you're about to make a function call and must explain it to yourself. Otherwise, never show it.

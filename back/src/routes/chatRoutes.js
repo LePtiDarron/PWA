@@ -12,6 +12,7 @@ const client = new BedrockAgentRuntimeClient({
 });
 
 router.post('/', async (req, res) => {
+  console.log('sending message');
   const message = req.body.message;
   const sessionId = uuidv4();
 
@@ -25,11 +26,14 @@ router.post('/', async (req, res) => {
   try {
     let completion = "";
     const response = await client.send(command);
+    console.log(response);
 
     for await (const chunkEvent of response.completion) {
-      const chunk = chunkEvent.chunk;
-      const decodedResponse = new TextDecoder('utf-8').decode(chunk.bytes);
-      completion += decodedResponse;
+      const bytes = chunkEvent.chunk?.bytes;
+      if (bytes) {
+        const decoded = new TextDecoder('utf-8').decode(bytes);
+        completion += decoded;
+      }
     }
 
     res.json({ sessionId, message: completion });

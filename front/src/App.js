@@ -8,8 +8,8 @@ function App() {
 
   return (
     <div className='container py-4'>
-      <div className='card card-body'>
-        <div className='row'>
+      <div className='card card-body mt-4'>
+        <div className='row m-0'>
           <div className='col-md-4'>
             <UserForm onUserCreated={() => setRefresh(r => r + 1)} />
           </div>
@@ -18,7 +18,7 @@ function App() {
           </div>
         </div>
       </div>
-      <div className='card card-body'>
+      <div className='card card-body mt-4'>
         <UserList refreshTrigger={refresh} />
       </div>
     </div>
