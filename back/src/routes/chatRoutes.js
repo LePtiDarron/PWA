@@ -1,4 +1,4 @@
-const { BedrockAgentRuntimeClient, ConverseCommand } = require('@aws-sdk/client-bedrock-agent-runtime');
+const { BedrockAgentRuntimeClient, converseCommand } = require('@aws-sdk/client-bedrock-agent-runtime');
 const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
   };
 
   try {
-    const command = new ConverseCommand(input);
+    const command = new converseCommand(input);
     const response = await client.send(command);
 
     const reply = response?.output?.text || "Error";
