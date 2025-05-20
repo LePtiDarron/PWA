@@ -52,8 +52,9 @@ services:
     depends_on:
       - back
       - front
-  restart: unless-stopped
-    certbot:
+    restart: unless-stopped
+
+  certbot:
     image: certbot/certbot
     container_name: certbot
     volumes:
