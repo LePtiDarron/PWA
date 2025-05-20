@@ -7,8 +7,6 @@ services:
     container_name: back
     ports:
       - "8000:8000"
-    expose:
-      - "8000"
     depends_on:
       - mongo
     env_file:
@@ -28,8 +26,6 @@ services:
     container_name: front
     ports:
       - "3000:3000"
-    expose:
-      - "3000"
     depends_on:
       - back
     env_file:
