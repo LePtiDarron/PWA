@@ -1,5 +1,4 @@
 const { BedrockAgentRuntimeClient, InvokeAgentCommand } = require('@aws-sdk/client-bedrock-agent-runtime');
-const { v4: uuidv4 } = require('uuid');
 const express = require('express');
 const router = express.Router();
 
@@ -12,9 +11,11 @@ const client = new BedrockAgentRuntimeClient({
 });
 
 router.post('/', async (req, res) => {
-  console.log('sending message');
-  const message = req.body.message;
-  const sessionId = uuidv4();
+  const { sessionId, message } = req.body.message;
+
+  if (!sessionId || !message) {
+    res.status(400).json({ error: 'Missing fields' });
+  }
 
   const command = new InvokeAgentCommand({
     agentId: 'WWMEMQTSYD',
