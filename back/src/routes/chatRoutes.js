@@ -11,7 +11,7 @@ const client = new BedrockAgentRuntimeClient({
 });
 
 router.post('/', async (req, res) => {
-  const { sessionId, message } = req.body.message;
+  const { sessionId, message } = req.body;
 
   if (!sessionId || !message) {
     res.status(400).json({ error: 'Missing fields' });
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
   const command = new InvokeAgentCommand({
     agentId: 'WWMEMQTSYD',
     agentAliasId: 'VORL3ZXZ5P',
-    sessionId,
+    sessionId: sessionId,
     inputText: message,
   });
 
