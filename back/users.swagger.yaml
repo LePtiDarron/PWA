@@ -8,59 +8,19 @@ servers:
   - url: https://test-ia.duckdns.org/api
 
 paths:
-  /users:
-    post:
-      summary: Create a new user
-      description: Create a new user with email, firstname, and lastname
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - firstname
-                - lastname
-                - role
-              properties:
-                email:
-                  type: string
-                  format: email
-                firstname:
-                  type: string
-                lastname:
-                  type: string
-                role:
-                  type: string
+  /users/roles:
+    get:
+      summary: Get available roles
+      description: Get available roles
       responses:
-        '201':
+        '200':
           description: User created successfully
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                  email:
-                    type: string
-                    format: email
-                  firstname:
-                    type: string
-                  lastname:
-                    type: string
-                  __v:
-                    type: integer
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
+                type: array
+                items:
+                  type: string
         '500':
           description: Internal server error
           content:
@@ -70,4 +30,3 @@ paths:
                 properties:
                   error:
                     type: string
-

@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 
   const command = new InvokeAgentCommand({
     agentId: 'WWMEMQTSYD',
-    agentAliasId: 'PA7YP5IVWK',
+    agentAliasId: 'SEBIOMSTZM',
     sessionId: sessionId,
     inputText: message,
   });
