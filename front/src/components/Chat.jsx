@@ -39,13 +39,13 @@ const Chat = () => {
     <div>
       <h2 className="mb-4">AI Chat</h2>
 
-      <div className="border rounded p-3 mb-3 bg-light" style={{ height: '300px', overflowY: 'scroll' }}>
+      <div className="border rounded p-3 mb-3 bg-light message-box">
         {messages.map((m, i) => (
           <div
             key={i}
             className={`mb-2 d-flex ${m.from === 'user' ? 'justify-content-end' : 'justify-content-start'}`}
           >
-            <div className={`p-2 rounded ${m.from === 'user' ? 'bg-primary text-white' : 'bg-secondary text-white'}`} style={{ whiteSpace: 'pre-wrap' }}>
+            <div className={`p-2 rounded preserve-linebreaks ${m.from === 'user' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
               {m.loading ? (
                 <span className="dots">
                   <span>.</span><span>.</span><span>.</span>
@@ -74,6 +74,13 @@ const Chat = () => {
 
       <style>
         {`
+          .message-box {
+            height: '300px';
+            overflowY: 'scroll';
+          }
+          .preserve-linebreaks {
+            white-space: pre-wrap !important;
+          }
           .dots span {
             animation: blink 1s infinite;
           }
