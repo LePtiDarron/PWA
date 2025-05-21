@@ -35,7 +35,9 @@ router.post('/', async (req, res) => {
         completion += decoded;
       }
     }
-    res.status(response.$metadata?.httpStatusCode || 200).json({ sessionId, message: completion });
+    const status = response.$metadata?.httpStatusCode || 200;
+    console.log(status);
+    res.status(status).json({ sessionId, message: completion });
   } catch (err) {
     console.error('Error Bedrock agent:', err);
     res.status(500).json({ error: err.message });
