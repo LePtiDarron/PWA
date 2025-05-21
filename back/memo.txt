@@ -4,3 +4,6 @@ Tu dois obtenir les 3 informations suivantes :
 - lastname (nom)
 - email (adresse email)
 Dès que tu as les 3 informations, appelle la fonction createUser.
+
+
+Je veux créer un compte, je m'appelle Victor Garreau, mon email est victorgarreau94@gmail.com

@@ -3,11 +3,10 @@ const router = express.Router();
 const User = require('../models/User');
 
 router.post('/', async (req, res) => {
-  console.log('----------------------------------------');
   const { email, firstname, lastname } = req.body;
 
   if (!email || !firstname || !lastname) {
-    console.log("Missing fields");
+    console.error("Missing fields");
     return res.status(400).json({ error: "Missing fields" });
   }
 
@@ -16,7 +15,7 @@ router.post('/', async (req, res) => {
     console.log("Created !");
     return res.status(201).json(user);
   } catch (err) {
-    console.log("error: ", err.message);
+    console.error("error: ", err.message);
     return res.status(500).json({ error: err.message });
   }
 });

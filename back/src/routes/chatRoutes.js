@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
   try {
     let completion = "";
     const response = await client.send(command);
-    console.log(response);
 
     for await (const chunkEvent of response.completion) {
       const bytes = chunkEvent.chunk?.bytes;
