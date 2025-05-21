@@ -45,7 +45,7 @@ const Chat = () => {
             key={i}
             className={`mb-2 d-flex ${m.from === 'user' ? 'justify-content-end' : 'justify-content-start'}`}
           >
-            <div className={`p-2 rounded ${m.from === 'user' ? 'bg-primary text-white' : 'bg-secondary text-white'}`}>
+            <div className={`p-2 rounded ${m.from === 'user' ? 'bg-primary text-white' : 'bg-secondary text-white'}`} style={{ whiteSpace: 'pre-wrap' }}>
               {m.loading ? (
                 <span className="dots">
                   <span>.</span><span>.</span><span>.</span>

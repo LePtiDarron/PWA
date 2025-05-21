@@ -18,8 +18,8 @@ router.post('/', async (req, res) => {
   }
 
   const command = new InvokeAgentCommand({
-    agentId: 'WWMEMQTSYD',
-    agentAliasId: 'BNPTMDMR2K',
+    agentId: process.env.AWS_AGENT_ID,
+    agentAliasId: process.env.AWS_ALIAS_ID,
     sessionId: sessionId,
     inputText: message,
   });
