@@ -10,7 +10,7 @@ const UserList = ({ refreshTrigger, onUserDeleted }) => {
         const res = await api.get(`/users`);
         setUsers(res.data);
       } catch (err) {
-        console.error(err);
+        console.error('Error: ', err.response?.data?.error || err.message);
       }
     };
     fetchUsers();
@@ -22,7 +22,7 @@ const UserList = ({ refreshTrigger, onUserDeleted }) => {
       if (onUserDeleted) onUserDeleted(id);
       setUsers(users.filter(user => user._id !== id));
     } catch (err) {
-      alert('Erreur lors de la suppression');
+        console.error('Error: ', err.response?.data?.error || err.message);
     }
   };
 
@@ -33,7 +33,7 @@ const UserList = ({ refreshTrigger, onUserDeleted }) => {
         {users.map(user => (
           <li key={user._id} className="list-group-item d-flex justify-content-between align-items-center">
             <div>
-              <strong>{user.firstname} {user.lastname}</strong> — <span className="text-muted">{user.email}</span>
+              <strong>{user.firstname} {user.lastname}</strong> - <span className="text-muted">{user.role}</span> - <span className="text-muted">{user.email}</span>
             </div>
             <button className="btn btn-danger btn-sm" onClick={() => handleDelete(user._id)}>
               Delete

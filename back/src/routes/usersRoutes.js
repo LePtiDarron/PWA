@@ -3,18 +3,18 @@ const router = express.Router();
 const User = require('../models/User');
 
 router.post('/', async (req, res) => {
-  const { email, firstname, lastname } = req.body;
+  const { email, firstname, lastname, role } = req.body;
 
-  if (!email || !firstname || !lastname) {
+  if (!email || !firstname || !lastname || !role) {
     console.error("Missing fields");
     return res.status(400).json({ error: "Missing fields" });
   }
 
   try {
-    const user = await User.create({ email, firstname, lastname });
+    const user = await User.create({ email, firstname, lastname, role });
     return res.status(201).json(user);
   } catch (err) {
-    console.error("error: ", err.message);
+    console.error("Error: ", err.message);
     return res.status(500).json({ error: err.message });
   }
 });
@@ -22,6 +22,11 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   const users = await User.find();
   res.json(users);
+});
+
+router.get('/roles', async (req, res) => {
+  const roles = ['Designer', 'Developer', 'Commercial'];
+  res.json(roles);
 });
 
 router.delete('/:id', async (req, res) => {
@@ -32,6 +37,7 @@ router.delete('/:id', async (req, res) => {
     }
     res.json({ message: 'Deleted' });
   } catch (err) {
+    console.error("Error: ", err.message);
     res.status(400).json({ error: err.message });
   }
 });

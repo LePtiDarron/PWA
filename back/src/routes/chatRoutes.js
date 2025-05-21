@@ -40,7 +40,7 @@ router.post('/', async (req, res) => {
     console.log(response);
     res.status(status).json({ sessionId, message: completion });
   } catch (err) {
-    console.error('Error Bedrock agent:', err);
+    console.error('Error:', err);
     res.status(500).json({ error: err.message });
   }
 });
