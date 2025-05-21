@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Users API
+  title: Roles API
   version: 1.0.0
   description: API Test
 
@@ -9,7 +9,7 @@ servers:
 
 paths:
   /users:
-    post:
+    get:
       summary: Create a new user
       description: Create a new user with email, firstname, and lastname
       requestBody:
@@ -30,8 +30,6 @@ paths:
                 firstname:
                   type: string
                 lastname:
-                  type: string
-                role:
                   type: string
       responses:
         '201':
@@ -61,13 +59,3 @@ paths:
                 properties:
                   error:
                     type: string
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-
