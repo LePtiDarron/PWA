@@ -1,7 +1,7 @@
 services:
   back:
     build:
-      context: ./back
+      context: .
     container_name: back
     expose:
       - "8000"
