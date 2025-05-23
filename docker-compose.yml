@@ -1,4 +1,6 @@
 services:
+  build:
+    context: ./
   back:
     image: nodejs-back
     container_name: back
