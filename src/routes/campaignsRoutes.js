@@ -4,75 +4,135 @@ const router = express.Router();
 router.get('/', (req, res) => {
   const models = [
     {
-      category: 'Category 1',
-      subcategories: [
+      "campaign_type": "Sensibilisation à la cybersécurité",
+      "categories": [
         {
-          subcategory: 'Subcategory 1-1',
-          campaigns: [
+          "category": "Sécurité en ligne",
+          "sub-categories": [
             {
-              name: 'Campaign 1',
-              duration: 30,
-              courses_number: 5,
-              replay: 1,
-              certificant: 1,
-              Quiz: 1,
-              Scenes: 1,
-              Video: 0,
-              langs: [
+              "sub-category": "Protection des comptes",
+              "campaigns": [
                 {
-                  lang: 'fr',
-                  name: 'Français',
-                  description: 'Description en français',
+                  "name": "Mots de passe sécurisés",
+                  "duration": 20,
+                  "courses_number": 3,
+                  "replay": 1,
+                  "certificant": 1,
+                  "Quiz": 1,
+                  "Scenes": 0,
+                  "Video": 1,
+                  "langs": [
+                    {
+                      "lang": "fr",
+                      "name": "Mots de passe sécurisés",
+                      "description": "Apprenez à créer et gérer des mots de passe forts pour sécuriser vos comptes en ligne."
+                    }
+                  ],
+                  "variants": [
+                    {
+                      "model_id": 101,
+                      "variant_name": "Introduction aux mots de passe",
+                      "available_languages": ["fr"],
+                      "thumbnail": "https://example.com/thumbnails/mots-de-passe.png"
+                    }
+                  ]
                 },
                 {
-                  lang: 'en',
-                  name: 'English',
-                  description: 'Description in English',
-                },
-              ],
-              variants: [
-                {
-                  model_id: 1,
-                  variant_name: 'Variant 1',
-                  available_languages: ['fr'],
-                  thumbnail: 'thumbnail1.png',
-                },
-              ],
-            },
-          ],
+                  "name": "Authentification à deux facteurs",
+                  "duration": 15,
+                  "courses_number": 2,
+                  "replay": 1,
+                  "certificant": 0,
+                  "Quiz": 1,
+                  "Scenes": 1,
+                  "Video": 0,
+                  "langs": [
+                    {
+                      "lang": "fr",
+                      "name": "Authentification à deux facteurs",
+                      "description": "Découvrez comment ajouter une couche de sécurité supplémentaire à vos comptes avec l'authentification à deux facteurs."
+                    }
+                  ],
+                  "variants": [
+                    {
+                      "model_id": 102,
+                      "variant_name": "Sécurité renforcée",
+                      "available_languages": ["fr"],
+                      "thumbnail": "https://example.com/thumbnails/2fa.png"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         {
-          subcategory: 'Subcategory 1-2',
-          campaigns: [
+          "category": "Comportements numériques",
+          "sub-categories": [
             {
-              name: 'Campaign 2',
-              duration: 45,
-              courses_number: 3,
-              replay: 2,
-              certificant: 0,
-              Quiz: 0,
-              Scenes: 1,
-              Video: 1,
-              langs: [
+              "sub-category": "Phishing & arnaques",
+              "campaigns": [
                 {
-                  lang: 'fr',
-                  name: 'Français',
-                  description: 'Description en français',
-                },
-              ],
-              variants: [
-                {
-                  model_id: 2,
-                  variant_name: 'Variant 2',
-                  available_languages: ['fr'],
-                  thumbnail: 'thumbnail2.png',
-                },
-              ],
+                  "name": "Reconnaître les emails frauduleux",
+                  "duration": 25,
+                  "courses_number": 4,
+                  "replay": 1,
+                  "certificant": 1,
+                  "Quiz": 1,
+                  "Scenes": 1,
+                  "Video": 1,
+                  "langs": [
+                    {
+                      "lang": "fr",
+                      "name": "Reconnaître les emails frauduleux",
+                      "description": "Apprenez à identifier les tentatives de phishing et à éviter de vous faire piéger."
+                    }
+                  ],
+                  "variants": [
+                    {
+                      "model_id": 103,
+                      "variant_name": "Simulation de phishing",
+                      "available_languages": ["fr"],
+                      "thumbnail": "https://example.com/thumbnails/phishing.png"
+                    }
+                  ]
+                }
+              ]
             },
-          ],
-        },
-      ],
-    },
+            {
+              "sub-category": "Utilisation sécurisée des réseaux sociaux",
+              "campaigns": [
+                {
+                  "name": "Vie privée sur les réseaux sociaux",
+                  "duration": 30,
+                  "courses_number": 5,
+                  "replay": 1,
+                  "certificant": 1,
+                  "Quiz": 1,
+                  "Scenes": 1,
+                  "Video": 1,
+                  "langs": [
+                    {
+                      "lang": "fr",
+                      "name": "Vie privée sur les réseaux sociaux",
+                      "description": "Comprenez les risques liés à l’exposition de vos informations personnelles sur les réseaux sociaux et comment les limiter."
+                    }
+                  ],
+                  "variants": [
+                    {
+                      "model_id": 104,
+                      "variant_name": "Protection de la vie privée",
+                      "available_languages": ["fr"],
+                      "thumbnail": "https://example.com/thumbnails/reseaux-sociaux.png"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ];
 
   res.json(models);
