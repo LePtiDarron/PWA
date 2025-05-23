@@ -1,7 +1,7 @@
 services:
-  build:
-    context: ./
   back:
+    build:
+      context: .
     image: nodejs-back
     container_name: back
     ports:
