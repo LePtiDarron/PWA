@@ -1,55 +1,14 @@
 services:
   back:
-    build:
-      context: ./back
-      dockerfile: Dockerfile
     image: nodejs-back
     container_name: back
     ports:
       - "8000:8000"
-    depends_on:
-      - mongo
     env_file:
-      - ./back/.env
+      - .env
     volumes:
       - ./back:/usr/src/app
       - /usr/src/app/node_modules
     networks:
       - app-network
     restart: unless-stopped
-
-  front:
-    build:
-      context: ./front
-      dockerfile: Dockerfile
-    image: reactjs-front
-    container_name: front
-    ports:
-      - "3000:3000"
-    env_file:
-      - ./front/.env
-    volumes:
-      - ./front:/usr/src/app
-      - /usr/src/app/node_modules
-    networks:
-      - app-network
-    restart: unless-stopped
-
-  mongo:
-    image: mongo:latest
-    restart: always
-    env_file:
-      - ./back/.env
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-    networks:
-      - app-network
-
-volumes:
-  mongo-data:
-
-networks:
-  app-network:
-    driver: bridge
