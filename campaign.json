@@ -127,5 +127,220 @@
         }
       }
     }
+  },
+  "components": {
+    "schemas": {
+      "Model-Campaign": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "name": "Cyberheroes  - Malware",
+            "duration": 10,
+            "courses_number": 2,
+            "replay": 1,
+            "certificant": 1,
+            "Quiz": 1,
+            "Scenes": 1,
+            "Video": 1,
+            "langs": [
+              {
+                "lang": "be-vlg",
+                "name": "Cyberhelden  - Malware",
+                "description": "<p>Laat uw medewerkers de cyberhelden van uw bedrijf worden!</p>\r\n\r\n<p><span style=\"font-size:13px\"><strong>Doelstelling</strong><span style=\"font-size:10pt\"><strong>:</strong> de collega&#39;s helpen om geen fouten te maken in typische, werkdag-gerelateerde situaties, aan de hand van virtuele confrontaties met de realiteit. </span></span></p>\r\n\r\n<p><span style=\"font-size:13px\"><strong><span style=\"font-size:10pt\">Zijn rol</span></strong><span style=\"font-size:10pt\"><strong>: </strong>uw bedijf beschermen tegen cyberdreigingen waaraan uw bedrijf dagelijks is blootgesteld. </span></span></p>\r\n\r\n<p><strong>1e missie:</strong> malware bestrijden. (Parcours bestaande uit een video met toelichting en een interactieve video. Duur: ongeveer 14 minuten)</p>\r\n\r\n<p>&nbsp;</p>"
+              }
+            ],
+            "variants": [
+              {
+                "model_id": 52,
+                "thumbnail": "https://sensiwave3-prod.s3.eu-west-3.amazonaws.com/pv3_models/medias/campaigns/30-cyberheros-mission-1-les-codes-malveillants-cyberhero-01-codes-malveillants-p1/thumbnail/202102151411_Capture.PNG?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJUIWM6I6P5YYOXQQ%2F20210928%2Feu-west-3%2Fs3%2Faws4_request&X-Amz-Date=20210928T072822Z&X-Amz-SignedHeaders=host&X-Amz-Expires=2400&X-Amz-Signature=41fb140618aae93c72ef7687431fba6b28d4b3c7674a763580cbdb387da3f6d7"
+              }
+            ]
+          }
+        },
+        "title": "Model Campaign",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Administrative name of the campaign."
+          },
+          "duration": {
+            "type": "number",
+            "description": "Estimated duration in minutes."
+          },
+          "courses_number": {
+            "type": "number",
+            "description": "Number of courses included in campaign"
+          },
+          "replay": {
+            "type": "number",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Ability to reply or not the campaign"
+          },
+          "certificant": {
+            "type": "number",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Ability to retrieve a certification at the end of the campaign"
+          },
+          "Quiz": {
+            "type": "number",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Presence of Quiz content type"
+          },
+          "Scenes": {
+            "type": "number",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Presence of Scenes content type"
+          },
+          "Video": {
+            "type": "number",
+            "enum": [
+              0,
+              1
+            ],
+            "description": "Presence of Video content type"
+          },
+          "langs": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "description": "Campaigns translations",
+            "items": {
+              "type": "object",
+              "properties": {
+                "lang": {
+                  "type": "string",
+                  "description": "Lang identifier"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Localized campaign's name"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Localized campaign's description"
+                }
+              },
+              "required": [
+                "lang",
+                "name",
+                "description"
+              ]
+            }
+          },
+          "variants": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "description": "Campaign presentation variants",
+              "properties": {
+                "model_id": {
+                  "type": "number",
+                  "description": "This is the id that identifies the campaign variant"
+                },
+                "variant_name": {
+                  "type": "string"
+                },
+                "available_languages": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "thumbnail": {
+                  "type": "string",
+                  "description": "Variant's thumbnail URL"
+                }
+              },
+              "required": [
+                "model_id",
+                "variant_name",
+                "available_languages",
+                "thumbnail"
+              ]
+            }
+          }
+        },
+        "required": [
+          "name",
+          "duration",
+          "courses_number",
+          "replay",
+          "certificant",
+          "Quiz",
+          "Scenes",
+          "Video",
+          "langs",
+          "variants"
+        ]
+      }
+    },
+    "responses": {
+      "422-response": {
+        "description": "Unprocessable Entity",
+        "content": {
+          "application/json": {
+            "schema": {
+              "description": "",
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "message": "The given data was invalid.",
+                  "errors": {
+                    "password": [
+                      "The password field is required."
+                    ]
+                  }
+                }
+              },
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "errors": {
+                  "type": "object",
+                  "properties": {
+                    "identifier": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Accept-Header": {
+        "name": "Accept",
+        "in": "header",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "application/json"
+          ]
+        },
+        "required": true,
+        "description": "Accept json header"
+      }
+    }
   }
 }
