@@ -1,0 +1,131 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RapidAwareness Partner API",
+    "version": "1.0",
+    "description": "**The RapidAwareness Partner API is only available to known partners of Conscio-technologies.**\n\nThis documentation defines all endpoints available to manage your own clients via a REST API.",
+    "contact": {
+      "name": "Conscio Techonologies Support",
+      "url": "https://www.conscio-technologies.com",
+      "email": "support@conscio-technologies.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://rapid3-dev.rapidawareness.fr/api/v1",
+      "description": "RapidAwareness v3 Development Server"
+    },
+    {
+      "url": "https://v3.rapidawareness.fr/api/v1",
+      "description": "RapidAwareness v3 Production server"
+    }
+  ],
+  "paths": {
+    "/campaigns": {
+      "post": {
+        "summary": "Create new campaign",
+        "operationId": "post-campaigns",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "x-examples": {
+                    "example-1": {
+                      "message": "campaign created campaign->id=1"
+                    }
+                  },
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "campaign_id": {
+                      "type": "number",
+                      "description": "id of the campaign created"
+                    }
+                  },
+                  "required": [
+                    "message",
+                    "campaign_id"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/422-response"
+          }
+        },
+        "description": "To create a campaign from a **model_id** retrieved from get-models.\n\nThe language formats are also to be retrieved from get-models (for example **fr-fr** and not *fr*)",
+        "security": [
+          {
+            "Client Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Accept-Header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "model_id": {
+                    "type": "number",
+                    "description": "The model_id retrieved from get-models"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The new administrative name of the campaign"
+                  },
+                  "lang": {
+                    "type": "array",
+                    "description": "Array of langs to be copied from the model campaign (retrieved from get-models)",
+                    "minItems": 1,
+                    "uniqueItems": true,
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "from_name": {
+                    "type": "string",
+                    "description": "from name that will appear for invitations"
+                  },
+                  "from_email": {
+                    "type": "string",
+                    "description": ""
+                  },
+                  "start_date": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "Y-m-d"
+                  },
+                  "end_date": {
+                    "type": "string",
+                    "format": "date",
+                    "pattern": "Y-m-d"
+                  }
+                },
+                "required": [
+                  "model_id",
+                  "name",
+                  "lang",
+                  "from_name",
+                  "from_email",
+                  "start_date",
+                  "end_date"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "RapidAwareness Partner API",
+    "version": "1.0",
+    "description": "**The RapidAwareness Partner API is only available to known partners of Conscio-technologies.**\n\nThis documentation defines all endpoints available to manage your own clients via a REST API.",
+    "contact": {
+      "name": "Conscio Techonologies Support",
+      "url": "https://www.conscio-technologies.com",
+      "email": "support@conscio-technologies.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://rapid3-dev.rapidawareness.fr/api/v1",
+      "description": "RapidAwareness v3 Development Server"
+    },
+    {
+      "url": "https://v3.rapidawareness.fr/api/v1",
+      "description": "RapidAwareness v3 Production server"
+    }
+  ],
+  "paths": {
+    "/models": {
+      "get": {
+        "summary": "Get models",
+        "responses": {
+          "200": {
+            "description": "Model campaigns are categorized by type (e.g. Sensitization / Cybersecurity / Cyberhero)\nThere may be several \"variations\" of this campaign, which correspond to different portals. Each vary corresponds to a \"model_id\", it is this \"model_id\" that must be entered when creating a campaign.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "campaign_type": {
+                            "type": "string"
+                          },
+                          "categories": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "category": {
+                                  "type": "string"
+                                },
+                                "sub-categories": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "sub-category": {
+                                        "type": "string"
+                                      },
+                                      "campaigns": {
+                                        "type": "array",
+                                        "items": {
+                                          "$ref": "#/components/schemas/Model-Campaign"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-models",
+        "description": "Retrieve the models campaigns available",
+        "security": [
+          {
+            "Client Bearer Token": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Accept-Header"
+          }
+        ]
+      }
+    }
+  }
+}

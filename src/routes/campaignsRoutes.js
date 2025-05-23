@@ -1,6 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
+router.post('/', (req, res) => {
+  const { model_id, name, lang, from_name, from_email, start_date, end_date } = req.body;
+
+  console.log("-=<>=- Création d'une campagne -=<>=-");
+  console.log("ID du modèle           : ", model_id);
+  console.log("Nom de la campagne     : ", name);
+  console.log("Langues                : ", lang);
+  console.log("Nom de l'expediteur    : ", from_name);
+  console.log("Email de l'expediteur  : ", from_email);
+  console.log("Date de début          : ", start_date);
+  console.log("Date de fin            : ", end_date);
+
+  res.status(200).json({ message: "OK" });
+});
+
 router.get('/', (req, res) => {
   const models = [
     {
