@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/campaigns', (req, res) => {
+router.post('/', (req, res) => {
   const { model_id, name, lang, from_name, from_email, start_date, end_date } = req.body;
 
   if (!model_id || !name || !Array.isArray(lang) || lang.length === 0 || !from_name || !from_email || !start_date || !end_date)
