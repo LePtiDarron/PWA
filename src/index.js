@@ -6,10 +6,10 @@ const cors = require('cors');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: '*' }));
 
-app.use('/api/campaigns', modelsRoutes);
-app.use('/api/models', campaignsRoutes);
+app.use('/api/models', modelsRoutes);
+app.use('/api/campaigns', campaignsRoutes);
 app.get('/api/', async (req, res) => {res.json({message: 'Server running'})});
 
 const PORT = process.env.PORT || 8000;
